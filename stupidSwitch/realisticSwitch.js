@@ -1,3 +1,8 @@
+/* 
+ * Author: HarutoHiroki
+ * Based on a joke on twitter about if statements, except overdone to the point of absurdity
+ * "Because an irl switch can only have 2 states"
+ */
 let condition = null;
 let start = performance.now(); // Start timer for the switch case
 
