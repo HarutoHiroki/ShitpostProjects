@@ -1,0 +1,3 @@
+[submodule "ESP32PWMMotorControl"]
+	path = ESP32PWMMotorControl
+	url = https://github.com/ShitpostAtWork/ESP32PWMMotorControl.git
