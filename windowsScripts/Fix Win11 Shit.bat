@@ -5,10 +5,11 @@
 cls
 echo Choose a fix/mod:
 echo 1. (Requires Admin Privileges) Disables Win11's (and Win10's) DogSHIT ^Start Menu Web Search.
-echo 2. (Requires Admin Privileges) Completely removes the DogShit Recommended section from the ^Start Menu (Win11 SE/EDU).
+echo 2. (Requires Admin Privileges) Remove all dogshit recommended sections from everywhere.
 echo 3. Disables win 11's DogSHIT Right-Click Menu and uses the old and gold Win10's menu instead.
-echo 4. Enables Self-Signed Certificates for BitLocker.
-echo 5. Quit the Script.
+echo 4. Disables Automatic Folder Discovery (speed up folder loading).
+echo 5. Enables Self-Signed Certificates for BitLocker.
+echo 6. Quit the Script.
 
 :: Prompt user with a choice
 set /p choice="Pick a fix: "
@@ -17,8 +18,9 @@ set /p choice="Pick a fix: "
 if %choice% == 1 goto DisableOnlineSearch
 if %choice% == 2 goto RemoveRecommendedSection
 if %choice% == 3 goto UseOldContextMenu
-if %choice% == 4 goto EnableSelfSignedCertificates
-if %choice% == 5 goto END
+if %choice% == 4 goto DisableAutoFolderDiscovery
+if %choice% == 5 goto EnableSelfSignedCertificates
+if %choice% == 6 goto END
 
 echo Invalid choice. Please try again.
 pause
@@ -58,6 +60,8 @@ set "tempFile=%temp%\RemoveRecommended_%random%.bat"
     echo     powershell -Command "Start-Process '%%~f0' -Verb RunAs"
     echo     exit
     echo ^)
+    echo reg.exe add "HKLM\SOFTWARE\Microsoft\PolicyManager\current\device\Start" /v HideRecommendedSection /t REG_DWORD /d 1 /f
+    echo reg.exe add "HKLM\SOFTWARE\Microsoft\PolicyManager\current\device\Education" /v IsEducationEnvironment /t REG_DWORD /d 1 /f
     echo reg.exe add "HKLM\SOFTWARE\Policies\Microsoft\Windows\Explorer" /v HideRecommendedSection /t REG_DWORD /d 1 /f
     echo pause
     echo exit
@@ -92,6 +96,12 @@ set "tempFile=%temp%\RemoveRecommended_%random%.bat"
 start "" "%tempFile%"
 pause
 del "%tempFile%"
+goto Menu
+
+:DisableAutoFolderDiscovery
+echo Disabling Automatic Folder Discovery...
+reg.exe add "HKCU\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\Bags\AllFolders\Shell" /v FolderType /t REG_SZ /d "NotSpecified" /f
+pause
 goto Menu
 
 :END
